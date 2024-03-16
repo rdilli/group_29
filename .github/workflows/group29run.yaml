@@ -28,4 +28,4 @@ jobs:
           Rscript -e 'install.packages(c("ggplot2","RSQLite","stringr","readxl","dplyr","readr"))'
       - name: Execute R script
         run: |
-          Rscript R/Create Table.rmd
+          Rscript R/Data_Analysis.R
