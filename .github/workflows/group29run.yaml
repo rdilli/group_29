@@ -25,7 +25,7 @@ jobs:
       - name: Install packages
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
-          Rscript -e 'install.packages(c("ggplot2","RSQLite","stringr","readxl","dplyr","readr"))'
+          Rscript -e 'install.packages(c("ggplot2","RSQLite","stringr","readxl","dplyr","readr","gridExtra","Hmisc","kableExtra"))'
       - name: Execute R script
         run: |
           Rscript R/Data_Analysis.R
