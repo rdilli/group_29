@@ -2,6 +2,7 @@ library(ggplot2)
 library(gridExtra)
 library(Hmisc)
 library(kableExtra)
+library(RSQLite)
 options(width=100)
 
 # Connect to database
