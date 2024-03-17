@@ -1,6 +1,5 @@
 library(RSQLite)
 library(ggplot2)
-library(tidyverse)
 library(gridExtra)
 library(Hmisc)
 options(width=100)
