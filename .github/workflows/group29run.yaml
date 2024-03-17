@@ -35,6 +35,7 @@ jobs:
           Rscript R/Data_Validation.R
       - name: Add files
         run: |
+          git config --global user.email "ramyad6222@gmail.com"
           git config --global user.name "rdilli"
           git add --all graphs/
       - name: Commit files
