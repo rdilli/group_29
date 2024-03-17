@@ -35,9 +35,13 @@ jobs:
           Rscript R/Data_Validation.R
       - name: Add files
         run: |
-          git config --global user.email "ramyad6222@gmail.com"
           git config --global user.name "rdilli"
           git add --all graphs/
       - name: Commit files
         run: |
-          git commit -m "Add DM group 29 analysis graphs"
+          git commit -m "Adding DM group 29 analysis graphs"
+      - name: Push changes
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+            github_token: ${{ secrets.group29_token }}
+            branch: main
