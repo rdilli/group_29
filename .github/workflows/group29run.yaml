@@ -33,3 +33,11 @@ jobs:
       - name: Execute R script
         run: |
           Rscript R/Data_Validation.R
+      - name: Add files
+        run: |
+          git config --global user.email "ramyad6222@gmail.com"
+          git config --global user.name "rdilli"
+          git add --all graphs/
+      - name: Commit files
+        run: |
+          git commit -m "Add DM group 29 analysis graphs"
