@@ -1,4 +1,5 @@
 library(RSQLite)
+library(ggplot2)
 # Connect to database
 my_connection <- dbConnect(RSQLite::SQLite(),"project_dm.db")
 
