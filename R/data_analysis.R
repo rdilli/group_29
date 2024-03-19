@@ -1,3 +1,4 @@
+library(RSQLite)
 # Connect to database
 my_connection <- dbConnect(RSQLite::SQLite(),"project_dm.db")
 
