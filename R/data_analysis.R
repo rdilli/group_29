@@ -1,10 +1,3 @@
-library(RSQLite)
-library(gridExtra)
-library(Hmisc)
-options(width=100)
-library(kableExtra)
-library(ggplot2)
-library(tidyverse)
 # Connect to database
 my_connection <- dbConnect(RSQLite::SQLite(),"project_dm.db")
 
