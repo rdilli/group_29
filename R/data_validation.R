@@ -35,7 +35,7 @@ check_age <- function(age){
   current_year <- year(Sys.Date())
   birth_years <- year(age)
   ages <- current_year - birth_years
-  valid_age <- ages >= 18 & ages <= 100
+  valid_age <- ages >= 18 & ages <= 60
   return(valid_age)
 }
 
@@ -49,12 +49,6 @@ price_range_check <- function(price) {
 stock_check <- function(stock){
   valid_stock <- stock >=0
   return(valid_stock)
-}
-
-#Fucntion to check non-negativity
-non.negative <- function(neg){
-  valid.nonneg <- neg >= 0
-  return(valid.nonneg)
 }
 
 ## Customer Table
@@ -114,13 +108,21 @@ query_age.customer <- "SELECT cust_birthday FROM customer"
 
 age.customer <- dbGetQuery(connection, query_age.customer)
 
-age_validity.customer <- sapply(age.customer, check_age)
-age_nonneg.customer <- sapply(age.customer, non.negative)
+age.customer$cust_birthday <- as.Date(age.customer$cust_birthday)
 
-cust.age.validity <- data.frame(age=age.customer, Valid=age_validity.customer, Nonneg=age_nonneg.customer)
+age.customer$age <- year(Sys.Date()) - year(age.customer$cust_birthday)
 
-invalid.age <- subset(cust.age.validity, cust_birthday.1==FALSE&cust_birthday.2==FALSE)
-print(paste("Number of invalid customer ages:",nrow(invalid.age)))
+# Define thresholds for invalid ages
+invalid_age_min <- 18
+invalid_age_max <- 100
+
+# Count customers under 18 and over 100
+n_under_18 <- sum(age.customer$age < invalid_age_min)
+n_over_100 <- sum(age.customer$age > invalid_age_max)
+
+# Print the results
+cat("Number of customers under 18:", n_under_18, "\n")
+cat("Number of customers over 100:", n_over_100, "\n")
 
 #Duplicates
 check_duplicates.customer <-  "
@@ -198,11 +200,10 @@ query_price.product <- "SELECT product_price FROM product"
 price.product <- dbGetQuery(connection, query_price.product)
 
 price_validity.product <- sapply(price.product, price_range_check)
-price_nonneg.product <- sapply(price.product, non.negative)
 
-product.price.validity <- data.frame(price = price.product, Valid = price_validity.product, Nonneg <- price_nonneg.product)
+product.price.validity <- data.frame(price = price.product, Valid = price_validity.product)
 
-invalid.price.product <- subset(product.price.validity, product_price.1==FALSE,product_price.2==FALSE)
+invalid.price.product <- subset(product.price.validity, product_price.1==FALSE)
 print(paste("Number of invalid product prices:",nrow(invalid.price.product)))
 
 #Stock validation
@@ -210,12 +211,11 @@ query_stock.product <- "SELECT product_stock FROM product"
 
 stock.product <- dbGetQuery(connection, query_stock.product)
 
-stock_validity.product <- sapply(stock.product, stock_check)
-price_nonneg.product <- sapply(stock.product, non.negative)
+stock_validity.product <- sapply(price.product, stock_check)
 
-product.stock.validity <- data.frame(stock = stock.product, Valid = stock_validity.product, nonneg=price_nonneg.product)
+product.stock.validity <- data.frame(stock = stock.product, Valid = stock_validity.product)
 
-invalid.stock.product <- subset(product.stock.validity, product_stock.1==FALSE, product_stock.2==FALSE)
+invalid.stock.product <- subset(product.stock.validity, product_price==FALSE)
 print(paste("Number of invalid product stocks:",nrow(invalid.stock.product)))
 
 
@@ -293,7 +293,6 @@ print(paste("Number of invalid shipment:",nrow(is_before)))
 
 
 ## Discount Table
-
 # Query to identify entries with duplicate discount names or duplicate discount percentages
 query.discount <- "
     SELECT discount_id, discount_name, discount_percentage, COUNT(*) AS num_duplicates
@@ -385,17 +384,6 @@ query.category <- "
 # Execute the SQL statement
 dbExecute(connection, query.category)
 
-#Discount non negativity
-
-query.discount5 <- " SELECT discount_percentage FROM discount"
-discount.percent <- dbGetQuery(connection, query.discount5)
-
-discount.validity <- sapply(discount.percent, non.negative)
-
-valid.discounts <- data.frame(discount.percent, Valid=discount.validity)
-invalid.discount.percent <- subset(valid.discounts, discount_percentage.1==FALSE)
-print(paste("Number of non negative values:", nrow(invalid.discount.percent)))
-
 
 ## Order Table
 #Reference Integrity
@@ -428,8 +416,6 @@ query.order.quantity <- "SELECT order_quantity FROM 'order'"
 order.quantity <- dbGetQuery(connection, query.order.quantity)
 
 quantity.validate <- order.quantity>=1 & order.quantity <=5
-quantity.nonneg <- sapply(order.quantity, non.negative)
-
 invalid.quantity <- subset(quantity.validate, order.quantity==FALSE)
 print(paste("Number of invalid quantitiy in order:",nrow(invalid.quantity)))
 
