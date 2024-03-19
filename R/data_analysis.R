@@ -3,6 +3,7 @@ library(gridExtra)
 library(Hmisc)
 options(width=100)
 library(kableExtra)
+library(ggplot2)
 # Connect to database
 my_connection <- dbConnect(RSQLite::SQLite(),"project_dm.db")
 
