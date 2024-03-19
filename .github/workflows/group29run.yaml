@@ -29,13 +29,7 @@ jobs:
           Rscript -e 'install.packages(c("ggplot2","RSQLite","stringr","readxl","dplyr","readr","gridExtra","Hmisc","kableExtra","DBI","lubridate","openxlsx"))'
       - name: Execute R script
         run: |
-          Rscript R/data_analysis.R
-      - name: Execute R script
-        run: |
-          Rscript R/data_validation.R
-      - name: Execute R script
-        run: |
-          Rscript R/new_data_validation.R
+          Rscript R/Group29.R
       - name: Add files
         run: |
           git config --global user.email "ramyad6222@gmail.com"
