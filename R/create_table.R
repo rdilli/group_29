@@ -40,9 +40,13 @@ RSQLite::dbExecute(my_connection, "
 CREATE INDEX idx_customer_location ON customer(cust_city, cust_postcode);
 ")
 
+RSQLite::dbExecute(my_connection, "DROP INDEX IF EXISTS idx_product_name;")
+
 RSQLite::dbExecute(my_connection, "
 CREATE INDEX idx_product_name ON product(product_name);
 ")
+
+RSQLite::dbExecute(my_connection, "DROP INDEX IF EXISTS idx_product_stock;")
 
 RSQLite::dbExecute(my_connection, "
 CREATE INDEX idx_product_stock ON product(product_stock);

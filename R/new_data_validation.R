@@ -3,29 +3,6 @@ library(RSQLite)
 # connect to database
 my_connection <- dbConnect(RSQLite::SQLite(),"project_dm.db")
 
-# Loading using `read_excel`
-customer <- readxl::read_excel("data_upload/Customer/Customer_table.xlsx")
-category <- readxl::read_excel("data_upload/Category/Category_table.xlsx")
-discount <- readxl::read_excel("data_upload/Discount/Discount_table.xlsx")
-order <- readxl::read_excel("data_upload/Order/Order_table.xlsx")
-product <- readxl::read_excel("data_upload/Product/Product_table.xlsx")
-shipment <- readxl::read_excel("data_upload/Shipment/Shipment_table.xlsx")
-supplier <- readxl::read_excel("data_upload/Supplier/Supplier_table.xlsx")
-
-# Change date format
-customer$cust_birthday <- as.character(customer$cust_birthday)
-order$order_purchased_date <- as.character(order$order_purchased_date)
-shipment$shipping_date <- as.character(shipment$shipping_date)
-shipment$delivered_date <- as.character(shipment$delivered_date)
-
-# Write them to the database
-RSQLite::dbWriteTable(my_connection,"customer",customer, append = TRUE)
-RSQLite::dbWriteTable(my_connection,"category",category,append=TRUE)
-RSQLite::dbWriteTable(my_connection,"discount",discount,append=TRUE)
-RSQLite::dbWriteTable(my_connection,"product",product,append=TRUE)
-RSQLite::dbWriteTable(my_connection,"order",order,append=TRUE)
-RSQLite::dbWriteTable(my_connection,"shipment",shipment,append=TRUE)
-
 # primary key check for customer data
 all_files <- list.files("data_upload/Customer/")
 for (variable in all_files) {
