@@ -1,4 +1,8 @@
 library(RSQLite)
+library(gridExtra)
+library(Hmisc)
+options(width=100)
+library(kableExtra)
 # Connect to database
 my_connection <- dbConnect(RSQLite::SQLite(),"project_dm.db")
 
